@@ -1,0 +1,92 @@
+CREATE TABLE Employees (
+EMP_NO INT NOT NULL PRIMARY KEY,
+EMP_Title_ID Varchar FOREIGN KEY,
+Birth_Date DATE, 
+First_Name Varchar,
+Last_Name Varchar,
+Sex Varchar,
+Hire_Date DATE 
+);
+
+CREATE TABLE Departments (
+DEPT_NO VARCHAR primary key,
+Dept_Name VARCHAR
+);
+
+CREATE TABLE DEPT_EMP (
+EMP_no INT NOT NULL foreign key,
+DEPT_NO VARCHAR foreign key 
+);
+
+CREATE TABLE DEPT_MANAGER (
+DEPT_NO VARCHAR foreign key,
+emp_no INT Not Null foreign key
+);
+
+CREATE TABLE Salaries (
+EMP_NO INT NOT NULL foreign key,
+Salary VARCHAR 
+);
+
+CREATE TABLE Titles (
+	
+EMP_Title_ID VARCHAR Primary Key, 
+Title VARCHAR
+);
+
+select *from titles
+
+
+
+--drop table departments 
+--drop table dept_emp
+--drop table dept_manager
+ --Data Analysis
+ --#1
+ 
+SELECT employees.Emp_No,employees.Last_name, employees.First_name,employees.sex,salaries.salary
+FROM employees
+INNER JOIN salaries on salaries.EMP_No = employees.Emp_No;
+
+--#2
+SELECT first_name,last_name,hire_date from employees 
+where hire_date between '1/1/1986'and '12/31/86'
+
+--#3
+SELECT d.dept_no, d.dept_name, m.emp_no, e.first_name, e.last_name from departments d
+inner join dept_manager m
+on d.dept_no = m.dept_no
+inner join employees e 
+on m.emp_no = e.emp_no;
+
+--#4
+SELECT de.emp_no,e.last_name,e.first_name, d.dept_name from departments d
+INNER JOIN  dept_emp de 
+on d.dept_no = de.dept_no
+INNER JOIN employees e
+on e.emp_no = de.emp_no; 
+
+--#5
+SELECT first_name, last_name, sex from employees where first_name = 'Hercules' and left(last_name,1) = 'B'
+
+--#6
+SELECT de.emp_no,e.last_name,e.first_name, d.dept_name from departments d
+INNER JOIN  dept_emp de 
+on d.dept_no = de.dept_no
+INNER JOIN employees e
+on e.emp_no = de.emp_no
+where d.dept_name ='Sales';
+
+--#7
+SELECT de.emp_no,e.last_name,e.first_name, d.dept_name from departments d
+INNER JOIN  dept_emp de 
+on d.dept_no = de.dept_no
+INNER JOIN employees e
+on e.emp_no = de.emp_no
+where  d.dept_name IN('Sales','Development');
+
+--#8
+
+SELECT COUNT(last_name) as LN_Count, last_name from employees 
+group by(last_name)
+order by LN_count desc
